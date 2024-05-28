@@ -1,0 +1,68 @@
+.bar-selected-color {
+  background-color: #FEB902;
+}
+
+.bar-default-color {
+  background-color: #EDEDED;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.question-color {
+  color: #FFB90D;
+}
+
+.half-width {
+  width: 42%;
+  max-width: 42%;
+  margin: auto;
+}
+
+.bar {
+  border-radius: 20px;
+}
+
+.options {
+  background-color: #F2F2F2;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+label {
+  width: 100%;
+}
+
+input[type="radio"] {
+  -ms-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+}
+
+.bar:not(:last-child) {
+  margin-right: 6px;
+}
+
+.no-padding {
+  padding: 0;
+  margin: 0;
+}
+
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.for-image {
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 768px) {
+  .half-width {
+    max-width: 100%;
+    width: 100%;
+  }
+}

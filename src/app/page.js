@@ -1,95 +1,68 @@
+"use client";
 import Image from "next/image";
-import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import "./page.css";
+import logo from '@/../public/logo.png';
+import TopBar from "@/component/top-bar/TopBar";
+
+import questions from "@/data";
+import Question from "@/component/question/Question";
+import Result from "@/component/result/Result";
 
 export default function Home() {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [checkedIndexes, setCheckedIndexes] = useState(new Array(questions.length).fill(-1));
+
+  const question = questions[currentQuestion];
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="box p-6">
+      {!showResult && <>
+        <TopBar length={questions.length} selected={currentQuestion + 1} />
+        <div className="mt-6">
+          <div className="is-flex is-flex-direction-row is-justify-content-space-between m-0 p-0">
+            <button className="button is-white" onClick={() => {
+              if (currentQuestion > 0) setCurrentQuestion(index => index - 1);
+            }}>
+              <span class="icon">
+                <i class="fas fa-arrow-left"></i>
+              </span>
+              <span className="is-size-7">PREVIOUS</span>
+            </button>
+            <div>
+              <Image src={logo} />
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+        <Question
+          currentQuestion={currentQuestion}
+          question={question}
+          selectOption={(currentQuestion, checkedIndex) => {
+            checkedIndexes[currentQuestion] = checkedIndex;
+            setCheckedIndexes([...checkedIndexes]);
+          }}
+          totalQuestions={questions.length}
+          checkedIndex={checkedIndexes[currentQuestion]}
         />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <div className="has-text-centered mt-6 mb-6">
+          <button className="button is-link is-rounded" onClick={() => {
+            if (currentQuestion < (questions.length - 1)) {
+              setCurrentQuestion(value => value + 1);
+            } else {
+              setShowResult(true);
+            }
+          }}>
+            <span className="is-size-7">{currentQuestion + 1 === questions.length ? 'Submit' : 'Next Question'}</span>
+            <span class="icon">
+              <i class="fas fa-arrow-right"></i>
+            </span>
+          </button>
+        </div>
+      </>}
+      {showResult && <Result checkedIndexes={checkedIndexes} setShowResult={setShowResult} />}
+    </div>
   );
 }
